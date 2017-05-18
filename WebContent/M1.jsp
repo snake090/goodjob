@@ -16,23 +16,7 @@
 <%} %>
 <script src="jquery.min.js"></script>
 <script type="text/javascript">
-function check(){
 
-	// 「OK」時の処理開始 ＋ 確認ダイアログの表示
-	if(window.confirm('消去して良いですか？')){
-		window.alert('消去しました'); 
-		return ture;
-
-	}
-	else{
-
-		window.alert('キャンセルされました'); // 警告ダイアログを表示
-		return false;
-
-	}
-	// 「キャンセル」時の処理終了
-
-}
 
 jQuery( function($) {
 		$('tbody tr[data-href]').addClass('clickable').click( function() {
@@ -77,39 +61,38 @@ jQuery( function($) {
 	</form>
 
 		
-				<table>
-				<tr>
-					<td></td>
-					<td>会社名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>会員番号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>氏名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>フリガナ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>所属名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>連絡先電話番号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>連絡先区分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>入会日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>与信額&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td></td>
-				</tr>
-				<%if(list!=null){ %>
-				<%for(Member m:list){ %>
-				<tr>
-				<td><input type ="radio" name="member" value=<% String.valueOf(number);%>>
-				<td><%=m.getCompany_name() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td><%=m.getMember_number() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td><%=m.getName() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td><%=m.getFurigana() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td><%=m.getJob() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td><%=m.getPhone_number() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td><%=m.getCategory() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td><%=m.getEntry_date() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td><%=m.getCredit_amount() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				</tr>
-				<%number++;%>
-				<%}%> 
-				
-				
-				</table><br><br>
+	<table>
+	<tr>
+	<td></td>
+	<td>会社名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>会員番号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>氏名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>フリガナ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>所属名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>連絡先電話番号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>連絡先区分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>入会日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>与信額&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td></td>
+	</tr>
+	<%if(list!=null){ %>
+		<%for(Member m:list){ %>
+			<tr>
+			<td><input type ="radio" name="member" value=<% String.valueOf(number);%>>
+			<td><%=m.getCompany_name() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><%=m.getMember_number() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><%=m.getName() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><%=m.getFurigana() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><%=m.getJob() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><%=m.getPhone_number() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><%=m.getCategory() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><%=m.getEntry_date() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><%=m.getCredit_amount() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			</tr>
+			<%number++;%>
+		<%}%> 
+	<%}%> 			
+	</table><br><br>
 			
 			
 		
@@ -122,21 +105,12 @@ jQuery( function($) {
 		<a href="MemberDelConf.html" class="btn btn-primary">消去</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-		<%}%>
+		
 
-	</div><br><br>
+	<br><br>
 	<a href="MemberRegistration.html" class="btn btn-primary">登録</a>
 
-	<script>
-		function show() {
-			var disp = document.getElementById("disp");
-			if(disp.style.display == "none") {
-				document.getElementById("disp").style.display="block";
-			} else if (disp.style.display == "block"){
-				document.getElementById("disp").style.display="none";
-			}
-		}
-	</script>
+
 	<hr>
 	<p><a href ="MemberCheck.html">メニューに戻る</a></p>
 </body>
