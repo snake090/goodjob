@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>管理メイン画面</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+<h1>協賛企業管理</h1>
+<h2>メイン画面</h2>
+<form>
+企業名 : <input type="text" name="company_name" value="自動車">　<input type="button" value="検索" onclick="show(); return false;">
+　<input type="button" value="リセット" onclick="show(); return false;"><br><br>
+</form>
+<form action="entry.html"><input type="submit" value="新規登録"></form><br>
+<form action="change.html"></form>
+<h2>企業一覧</h2>
+<div id="disp" style="display:''">
+<table class="table table-hover">
+<thead>
+<tr>
+<td></td><td>企業コード</td><td>企業名</td><td>企業フリガナ</td><td>郵便番号</td><td>住所</td><td>電話番号</td>
+<td>給与支給日</td><td>振込銀行名</td><td>支店名</td><td>口座種別</td><td>口座番号</td>
+</tr>
+</thead>
+<tbody>
+<form action="view.html">
+<tr>
+<td><input type="radio" name="example"></td><td>0001</td><td>はるみホールディングス</td><td>ハルミホールディングス</td>
+<td></td><td>○○都○○区</td><td>000-000-0001</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+<tr data-href="view.html">
+<td><input type="radio" name="example"></td><td>0002</td><td>はるみ自動車</td><td>ハルミジドウシャ</td>
+<td></td><td>○○都○○区</td><td>000-000-0002</td><td>31</td><td>はるみ銀行</td><td>はるみ支店</td><td>普</td><td>0987654</td>
+
+</tr>
+<tr>
+<td><input type="radio" name="example"></td><td>0003</td><td>はるみ製鉄</td><td>ハルミセイテツ</td>
+<td></td><td>○○県○○市</td><td>000-000-0003</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+<tr>
+<td><input type="radio" name="example"></td><td>0004</td><td>はるみ重工</td><td>ハルミジュウコウ</td>
+<td></td><td>○○府○○市</td><td>000-000-0004</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+<tr>
+<td><input type="radio" name="example"></td><td>0005</td><td>はるみ航空</td><td>ハルミコウクウ</td>
+<td></td><td>○○県○○市</td><td>000-000-0005</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+<tr>
+<td><input type="radio" name="example"></td><td>0006</td><td>はるみ電鉄</td><td>ハルミデンテツ</td>
+<td></td><td>○○県○○市</td><td>000-000-0006</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+<tr>
+<td><input type="radio" name="example"></td><td>0007</td><td>はるみソリューションズ</td><td>ハルミソリューションズ</td>
+<td></td><td>○○府○○市</td><td>000-000-0007</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+<tr>
+<td><input type="radio" name="example"></td><td>0008</td><td>はるみソフト</td><td>ハルミソフト</td>
+<td></td><td>○○県○○市</td><td>000-000-0007</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+<tr>
+<td><input type="radio" name="example"></td><td>0009</td><td>はるみ農業</td><td>ハルミノウギョウ</td>
+<td></td><td>○○道○○町</td><td>000-000-0007</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+</tbody>
+</form>
+</table>
+</div>
+<div id="disp2" style="display:none">
+<form action="view.html">
+<table class="table table-hover">
+<thead>
+<tr>
+<td></td><td>企業コード</td><td>企業名</td><td>企業フリガナ</td><td>郵便番号</td><td>住所</td><td>電話番号</td>
+<td>給与支給日</td><td>振込銀行名</td><td>支店名</td><td>口座種別</td><td>口座番号</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><input type="radio" name="example"></td><td>0002</td><td>はるみ自動車</td><td>ハルミジドウシャ</td>
+<td></td><td>○○都○○区</td><td>000-000-0002</td><td></td><td></td><td></td><td></td><td></td>
+
+</tr>
+</tbody>
+</table>
+</form>
+</div><br><br>
+<form style="display: inline" action="view.html">
+  <input type="submit" value="情報閲覧">
+</form>　　
+<form style="display: inline" action="change.html">
+  <input type="submit" value="変更">
+</form>　　
+<form style="display: inline" action="delete_confirm.html">
+  <input type="submit" value="消去"><br><br>
+</form>
+<script>
+		function show() {
+			var disp = document.getElementById("disp");
+			if(disp.style.display == "none") {
+				document.getElementById("disp").style.display='';
+			} else if (disp.style.display == ''){
+				document.getElementById("disp").style.display="none";
+			}
+			var disp2 = document.getElementById("disp2");
+			if(disp2.style.display == "none") {
+				document.getElementById("disp2").style.display='';
+			} else if (disp2.style.display == ''){
+				document.getElementById("disp2").style.display="none";
+			}
+		}
+	</script>
+</body>
+</html>

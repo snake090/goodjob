@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>会員確認画面</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+</head>
+<body>
+	<p>会員登録</p>
+	<br>
+	<form>
+		<p>社員番号 <input type="text" name="memberNo" maxlength="9"> 
+			<button onclick="show(); return false;" class="btn btn-primary" style="margin-left: 20px; margin-right: 20px">検索する</button>
+			<a href="index.html" class="btn btn-warning">戻る</a>
+		</p>
+	</form>
+
+	<div id="disp" style="display: none">
+		<p>結果</p>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>会社名</td>
+					<td>社員番号</td>
+					<td>お名前</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>A会社</td>
+					<td>283</td>
+					<td>趙（じょ）</td>
+					<td><a href="productCheck.html" class="btn btn-primary">注文する</a></td>
+				</tr>
+				<tr>
+					<td>B会社</td>
+					<td>283</td>
+					<td>大村（おおむら）</td>
+					<td><a href="productCheck.html" class="btn btn-primary">注文する</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script>
+		function show() {
+			var disp = document.getElementById("disp");
+			if(disp.style.display == "none") {
+				document.getElementById("disp").style.display="block";
+			} else if (disp.style.display == "block"){
+				document.getElementById("disp").style.display="none";
+			}
+		}
+	</script>
+</body>
+</html>

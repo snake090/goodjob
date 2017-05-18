@@ -1,0 +1,143 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="jquery.min.js"></script>
+<script type="text/javascript">
+function check(){
+
+	// 「OK」時の処理開始 ＋ 確認ダイアログの表示
+	if(window.confirm('消去して良いですか？')){
+		window.alert('消去しました'); 
+		return ture;
+
+	}
+	else{
+
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+		return false;
+
+	}
+	// 「キャンセル」時の処理終了
+
+}
+
+jQuery( function($) {
+		$('tbody tr[data-href]').addClass('clickable').click( function() {
+			window.location = $(this).attr('data-href');
+		}).find('a').hover( function() {
+			$(this).parents('tr').unbind('click');
+		}, function() {
+			$(this).parents('tr').click( function() {
+				window.location = $(this).attr('data-href');
+			});
+		});
+});
+</script>
+<title>会員情報管理画面</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+</head>
+<body>
+	<p>会員情報管理画面</p>
+	<br>
+	<form action="" method="post">
+		<p>会員番号 <input type="text" name="memberNo"> 
+		<button onclick="show(); return false;" class="btn btn-primary">検索する</button></p>
+	</form>
+
+	<div id="disp" style="display: none">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td></td>
+					<td>会社名</td>
+					<td>会員番号</td>
+					<td>氏名</td>
+					<td>フリガナ</td>
+					<td>所属名</td>
+					<td>連絡先電話番号</td>
+					<td>連絡先区分</td>
+					<td>入会日</td>
+					<td>与信額</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+
+					<td><input type="radio" name="member"></td>
+					<td>ロータス自動車</td>
+					<td>283</td>
+					<td>西沢順子</td>
+					<td>ニシザワジュンゴ</td>
+					<td>営業</td>
+					<td>03(3333)5555</td>
+					<td>自宅</td>
+					<td>2015/01/07</td>
+					<td>50,000</td>
+					<td>
+	
+					</td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="member"></td>
+					<td>B会社</td>
+					<td>293</td>
+					<td>大村</td>
+					<td>オオムラ</td>
+					<td>営業</td>
+					<td>02(4444)1111</td>
+					<td>自宅</td>
+					<td>2015/10/07</td>
+					<td>40,000</td>
+					<td>
+					
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<a href="MemberShow.html" class="btn btn-primary">参照</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="MemberChange.html" class="btn btn-primary">変更</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+		<a href="MemberDelConf.html" class="btn btn-primary">消去</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+	
+
+	</div><br><br>
+	<a href="MemberRegistration.html" class="btn btn-primary">登録</a>
+
+	<script>
+		function show() {
+			var disp = document.getElementById("disp");
+			if(disp.style.display == "none") {
+				document.getElementById("disp").style.display="block";
+			} else if (disp.style.display == "block"){
+				document.getElementById("disp").style.display="none";
+			}
+		}
+	</script>
+	<hr>
+	<p><a href ="MemberCheck.html">メニューに戻る</a></p>
+</body>
+
+</html>

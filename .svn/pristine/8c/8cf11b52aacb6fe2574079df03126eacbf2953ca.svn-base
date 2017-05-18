@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>注文確認画面</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+</head>
+<body>
+	<p>注文の確認</p>
+	<br>
+	<p>会社名：A会社</p>
+	<p>会員名 ：283 趙（じょ）</p>
+	<p>与信額 ：<font color="red"><b>80,000円</b></font></p>
+	<p>お届け先住所：〒060-0005 北海道札幌市 中央区北５条西６丁目2-2</p>
+	<p>お届け先区分：他</p>
+	<p>お支払い方法：給与控除（3回）</p>
+	<br>
+	<p>商品リスト</p>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<td>商品番号</td>
+				<td>商品名</td>
+				<td>数量</td>
+				<td>価格</td>
+				<td>色</td>
+				<td>柄</td>
+				<td>サイズ</td>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- 一つ目の商品 -->
+			<tr>
+				<td>1号2頁2番</td>
+				<td>帽子</td>
+				<td>1</td>
+				<td>4,000</td>
+				<td>赤</td>
+				<td></td>
+				<td>S</td>
+			</tr>
+			<!-- 二つ目の商品 -->
+			<tr>
+				<td>1号2頁3番</td>
+				<td>テレビ</td>
+				<td>1</td>
+				<td>4,000</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<!-- 三つ目の商品 -->
+			<tr>
+				<td>1号2頁4番</td>
+				<td>ワンピース</td>
+				<td>2</td>
+				<td>40,000</td>
+				<td></td>
+				<td>ギンガム・チェック</td>
+				<td>S</td>
+				<td>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr>
+	<p>小計　　88,000円（税込）</p>
+	<p>手数料　2,640円（３％）</p>
+	<p>合計　　90,640円</p>
+	<p><font color="red"><b>お客様の与信額以上になります。担当者に確認してください。</b></font></p>
+
+	<p>担当者名　<input type="text"></p>
+
+	<p><a href="productCheck.html" class="btn btn-primary">内容修正</a></p>
+	<p><a href="orderConfirm.html" class="btn btn-primary">注文確定</a></p>
+</body>
+</html>

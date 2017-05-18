@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>注文受付票検索画面</title>
+<script type="text/javascript" src="cmanCalendar_v092.js" charset="utf-8"></script>
+</head>
+<body>
+	<form action="ordersearchresult.html" method="post">
+		<input type="checkbox" name="condition" value="nichiji">作成日時<br>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" cmanCLDat="USE:ON" name="nichijimintxt">&nbsp;～&nbsp;<input type="text" cmanCLDat="USE:ON" name="nichijimaxtxt"><br><br>
+		<input type="checkbox" name="condition" value="tantou" checked="checked">担当者名&nbsp;&nbsp;※部分一致<br>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" name="tantoutxt" value="福田"><br><br>
+		<input type="checkbox" name="condition" value="kaishamei">会社名&nbsp;&nbsp;※部分一致<br>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" name="kaishatxt"><br><br>
+		<input type="checkbox" name="condition" value="kaiinbangou">会員番号&nbsp;&nbsp;※完全一致<br>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" name="kaiinbangoutxt"><br><br>
+		<input type="checkbox" name="condition" value="kaiinmei" checked="checked">会員名&nbsp;&nbsp;※部分一致<br>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" name="kaiinmeitxt" value="西沢"><br><br>
+		<input type="checkbox" name="condition" value="chumonbangou">注文受付票番号&nbsp;&nbsp;※完全一致<br>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" name="chumonbangoutxt"><br>
+		<p style="color:red; filter:alpha(opacity=70); -moz-opacity: 0.7; opacity: 0.7;">※エラーメッセージ</p>
+		<input type="submit" value="検索">&nbsp;&nbsp;
+	</form><br>
+	<form action="../index.html">
+		<input type="submit" value="メイン画面に戻る">
+	</form>
+</body>
+</html>

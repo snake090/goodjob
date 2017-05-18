@@ -1,0 +1,88 @@
+package com.goodjob.dto;
+
+/**
+ * @author 趙河燕
+ * @version 1.0
+ *
+ * */
+
+public class OrderItem {
+	int order_item_id;
+	int order_id;
+	int item_number;
+	String color;
+	String pattern;
+	String size;
+	int quantity;
+	String supplement;
+
+	public OrderItem() {
+	}
+
+	public int getOrder_item_id() {
+		return order_item_id;
+	}
+
+	public void setOrder_item_id(int order_item_id) {
+		this.order_item_id = order_item_id;
+	}
+
+	public int getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(int order_id) {
+		this.order_id = order_id;
+	}
+
+	public int getItem_number() {
+		return item_number;
+	}
+
+	public void setItem_number(int item_number) {
+		this.item_number = item_number;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getSupplement() {
+		return supplement;
+	}
+
+	public void setSupplement(String supplement) {
+		this.supplement = supplement;
+	}
+
+
+
+}

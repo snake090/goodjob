@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>新規登録</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+<h1>協賛企業管理</h1>
+<h2>新規登録画面</h2>
+企業名を入力してください。
+<form><input type="text" value="はるみ電信電話">　
+<input type="button" onclick="show(); return false;" value="追加"></form><br><br>
+<div id="disp" style="display:none">
+以下のフォームに必要事項を入力してください。<br><br><br>
+<form action="main.html">
+企業情報<br><br>
+<table class="table table-hover"><tr>
+<td>企業名</td><td>企業フリガナ</td><td>郵便番号</td><td>住所</td><td>電話番号</td>
+<td>給与支給日（末日のときは0）</td><td>振込銀行名</td><td>支店名</td><td>口座種別</td><td>口座番号</td>
+</tr>
+<tr>
+<td>はるみ電信電話</td><td><input type="text" value="ハルミデンシンデンワ"></td>
+<td><input type="text" value="0010061"></td><td><input type="text" value="北海道札幌市北区北十一条西"></td>
+<td><input type="text" value="03(3211)1234"></td><td><input type="text" value="10"></td>
+<td><input type="text" value="はるみ銀行"></td><td><input type="text" value="はるみ支店"></td>
+<td><select><option value="当">当</option><option value="普">普</option></select></td>
+<td><input type="text" value="0321987"></td></tr>
+</table><br><br>
+担当者<br><br>
+<table class="table table-hover"><tr>
+<td>部署</td><td>担当者名</td><td>フリガナ</td><td>電話番号</td>
+</tr><tr>
+<td><input type="text" value="総務部"></td><td><input type="text" value="石原真子"></td>
+<td><input type="text" value="イシハラマコ"></td><td><input type="text" value="03(3210)1234"></td>
+</tr></table><br><br>
+<input type="button" value="登録" onclick="myAlert(); return false;"><br><br>
+</form>
+<form action="./main.html">
+<input type="submit" value="戻る"><br><br>
+</form>
+</div>
+<script>
+		function show() {
+			var disp = document.getElementById("disp");
+			if(disp.style.display == "none") {
+				document.getElementById("disp").style.display='';
+			} else if (disp.style.display == ''){
+				document.getElementById("disp").style.display="none";
+			}
+		}
+	</script>
+<script>
+	function myAlert(){
+      alert('登録しました');
+      window.location.href = "./main.html"
+}
+	</script>
+</body>
+</html>

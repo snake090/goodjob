@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>変更</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+<h1>協賛企業管理</h1>
+<h2>閲覧画面</h2><br><br>
+企業名：はるみ自動車<br><br>
+企業情報<br><br>
+<table class="table table-hover"><tr>
+<td>企業フリガナ</td><td>郵便番号</td><td>住所</td><td>電話番号</td>
+<td>給与支給日</td><td>振込銀行名</td><td>支店名</td><td>口座種別</td><td>口座番号</td>
+</tr>
+<tr>
+<td>ハルミジドウシャ</td>
+<td>0010061</td><td>北海道札幌市北区北十一条西</td>
+<td>03(3211)1234</td><td>10</td>
+<td>はるみ銀行</td><td>はるみ支店</td>
+<td>当</td>
+<td>0321987</td></tr>
+</table>
+担当者<br><br>
+<table class="table table-hover"><tr>
+<td>部署</td><td>担当者名</td><td>フリガナ</td><td>電話番号</td>
+</tr><tr>
+<td>総務部</td><td>石原真子</td>
+<td>イシハラマコ</td><td>03(3210)1234</td>
+</tr></table><br><br>
+<form action="./main.html">
+<input type="submit" value="戻る"><br><br><br><br>
+</form>
+<form style="display: inline" action="change.html">
+  <input type="submit" value="変更">
+</form>　　
+<form style="display: inline" action="delete_confirm.html">
+  <input type="submit" value="消去"><br><br>
+</form>
+</div>
+<script>
+		function show() {
+			var disp = document.getElementById("disp");
+			if(disp.style.display == "none") {
+				document.getElementById("disp").style.display='';
+			} else if (disp.style.display == ''){
+				document.getElementById("disp").style.display="none";
+			}
+		}
+	</script>
+<script>
+	function myAlert(){
+      alert('変更しました');
+      window.location.href = "./main.html"
+}
+	</script>
+</body>
+</html>

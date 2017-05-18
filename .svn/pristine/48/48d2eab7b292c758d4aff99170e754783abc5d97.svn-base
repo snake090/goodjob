@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>注文受付票閲覧画面</title>
+<style type="text/css">
+p{
+	width: 400px;
+	height: 240px;
+	border: solid 2px;
+	padding: 60px 150px;
+	margin: 20px;
+
+}
+</style>
+<style type="text/css" media="print">
+    h3, input{
+        display: none;
+    }
+@page {size: auto; margin: 0mm;}
+</style>
+
+</head>
+<body>
+	<h3>注文受付票番号:00001</h3>
+	<p>注文受付票</p>
+	<input type="submit" value="印刷" onclick="window.print();"><br><br>
+	<form action="ordersearchresult.html" method="post">
+		<input type="submit" value="一覧に戻る">
+	</form><br>
+	<form action="../index.html">
+		<input type="submit" value="メイン画面に戻る">
+	</form>
+</body>
+</html>

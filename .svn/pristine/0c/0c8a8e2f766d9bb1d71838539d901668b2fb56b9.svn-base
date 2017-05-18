@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商品入力画面</title>
+<style type="text/css">
+	td{text-align: center;}
+	.info{
+		border: 1px solid black;
+		width:300px;
+		padding : 20px 30px;
+		margin-left: 30px;
+	}
+</style>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+	<p>商品確認</p>
+
+	<p class=info>
+		<br>
+		趙　河燕　様<br>
+		A会社　283<br>
+		与信額　:　100,000円<br>
+	</p>
+
+
+	<p>
+	商品番号　
+		<input type="text" size="3">号　
+		<input type="text" size="3">頁　
+		<input type="text" size="3">番　
+		<button class="btn btn-primary">追加</button>
+		<a href="memberCheck.html" class="btn btn-warning" style="margin-left: 30px;">戻る</a>
+	</p>
+	<div id="disp" style="display: none;">
+		<p>購入商品リスト</p>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>商品番号</td>
+					<td>商品名</td>
+					<td>単価（円）</td>
+					<td>数量</td>
+					<td>価格(円)</td>
+					<td>色</td>
+					<td width="80px">柄</td>
+					<td>サイズ</td>
+					<td>備考</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 一つ目の商品 -->
+				<tr>
+					<td>1号2頁2番</td>
+					<td>帽子</td>
+					<td>4,000</td>
+					<td><input type="number" value="1" style="width: 40px;" min="1" id="oneProduct"></td>
+					<td>4,000</td>
+					<td>
+						<select name="color">
+							<option value="red">赤</option>
+							<option value="blue">青</option>
+							<option value="green">緑</option>
+						</select>
+					</td>
+					<td></td>
+					<td>
+						<select name="size">
+							<option value="s">S</option>
+							<option value="m">M</option>
+							<option value="l">L</option>
+						</select>
+					</td>
+					<td></td>
+					<td>
+						<button class="btn btn-danger">削除</button>
+					</td>
+				</tr>
+				<!-- 二つ目の商品 -->
+				<tr>
+					<td>1号2頁3番</td>
+					<td>テレビ</td>
+					<td>4,000</td>
+					<td><input type="number" value="1" style="width: 40px;" min="1"></td>
+					<td>4,000</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><font color="red"><b>有効期限切れ</b></font><br><font size="0.9em" color="red">担当者に確認してください。</font></td>
+					<td>
+						<button class="btn btn-danger">削除</button>
+					</td>
+				</tr>
+				<!-- 三つ目の商品 -->
+				<tr>
+					<td>1号2頁4番</td>
+					<td>ワンピース</td>
+					<td>40,000</td>
+					<td><input type="number" value="1" style="width: 50px;" min="1"></td>
+					<td>40,000</td>
+					<td></td>
+					<td>
+						<select name="handle">
+							<option value="gingamu">ギンガム・チェック</option>
+							<option value="epuron">エプロン・チェック</option>
+							<option value="tartan">タータンチェック</option>
+						</select>
+					</td>
+					<td>
+						<select name="size">
+							<option value="s">S</option>
+							<option value="m">M</option>
+							<option value="l">L</option>
+						</select>
+					</td>
+					<td></td>
+					<td>
+						<button class="btn btn-danger">削除</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3"></td>
+					<td>合計額</td>
+					<td><font color="green"><b>48,000</b></font>  円</td>
+					<td colspan="3"></td>
+				</tr>
+			</tbody>
+		</table>
+		<a href="inputDelivery.html" class="btn btn-primary">次へ</a>
+	</div>
+	<script>
+			
+			$("button").on("click", function() {
+				var disp = document.getElementById("disp");
+				if(disp.style.display == "none") {
+					document.getElementById("disp").style.display="block";
+				} else if (disp.style.display == "block"){
+					document.getElementById("disp").style.display="none";
+				}
+			});
+
+			$("#oneProduct").on("blur", function() {
+				console.log($(this).val());	
+			});
+	</script>
+</body>
+</html>

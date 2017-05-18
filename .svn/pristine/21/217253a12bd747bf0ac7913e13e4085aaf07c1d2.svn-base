@@ -1,0 +1,9 @@
+﻿<script type="text/javascript">
+function myEnter(){
+     myRet = confirm("年会費１０００万円いただきます。よろしいですか？");
+     if ( myRet == true ){
+         alert("いまから集金に伺います (^^;");
+     }else{
+         alert("それは残念ですね");
+     }
+</script>

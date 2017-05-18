@@ -1,0 +1,5 @@
+package com.goodjob.dao;
+
+public class Member {
+
+}

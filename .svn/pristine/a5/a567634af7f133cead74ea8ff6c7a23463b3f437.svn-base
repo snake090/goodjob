@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="Shift_jis">
+<title>メイン画面</title>
+</head>
+<body>
+	<p>メニュー</p>
+	<ul>
+		<li><a href="./order_create/memberCheck.html">注文登録</a></li><br>
+		<li><a href="./order_check/ordersearch.html">注文受付票閲覧</a></li><br>
+		<li><a href="./member_management/MemberCheck.html">会員管理</a></li><br>
+		<li><a href="./company_management/main.html">協賛企業管理</a></li>
+	</ul>
+</body>
+</html>

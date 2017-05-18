@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>管理メイン画面</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+<h1>メイン画面</h1>
+<h2>削除確認</h2>
+以下の情報を削除してもよろしいですか？
+<h2>企業一覧</h2>
+<table class="table table-hover">
+<tr>
+<td>企業コード</td><td>企業名</td><td>フリガナ</td>
+<td>住所</td><td>電話</td>
+</tr>
+<tr>
+<td>0002</td><td>はるみ自動車</td><td>ハルミジドウシャ</td>
+<td>○○都○○区</td><td>000-000-0002</td>
+</tr>
+</table>
+<br><br>
+<form style="display: inline">
+  <input type="button" value="削除" onclick="myAlert(); return false;">
+</form>　　
+<form style="display: inline" action="main.html">
+  <input type="submit" value="戻る"><br><br>
+</form>
+<script>
+function myAlert(){
+      alert('削除しました');
+      window.location.href = "./main.html"
+}
+</script>
+</body>
+</html>

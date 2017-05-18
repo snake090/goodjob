@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript">
+
+
+function check(){
+
+	// 「OK」時の処理開始 ＋ 確認ダイアログの表示
+	if(window.confirm('消去して良いですか？')){
+		window.alert('消去されました'); 
+		return ture;
+
+	}
+	else{
+
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+		return false;
+
+	}
+	// 「キャンセル」時の処理終了
+
+}
+
+</script>
+<title>会員情報消去確認</title>
+</head>
+<body>
+<p>会員情報消去確認</p>
+協賛企業名<br>
+ロータス自動車<br><br>
+会員番号<br>
+228<br><br>
+氏名<br>
+西沢順子<br><br>
+フリガナ<br>
+ニシザワジュンコ<br><br>
+所属名<br>
+営業<br><br>
+連絡先電話番号<br>
+03(3333)5555<br><br>
+連絡先区分<br>
+自宅<br><br>
+入会日<br>
+2015/01/07<br><br>
+与信額<br>
+50,000<br><br>    
+備考<br><br>
+あああああああ
+ああああああ
+あああああ
+ああああ
+あああ
+ああ
+あ<br><br>
+	<form action ="MemberCheck.html" method="POST" onSubmit="return check()">
+<input type="submit" value="消去"><br><br>
+
+
+
+	</form>
+	<hr>
+	<p><a href ="MemberCheck.html">会員情報管理画面に戻る</a></p>
+</body>
+</html>

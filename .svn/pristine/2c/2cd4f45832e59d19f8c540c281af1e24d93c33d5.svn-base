@@ -1,0 +1,184 @@
+/**
+ * 協賛企業管理のためのDAO
+ * @author NABAE
+ * @version 0.5.0
+ */
+
+package com.goodjob.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import com.goodjob.dto.Company;
+
+public class CompanyDao {
+	private static String user = "db2admin";
+	private static String password = "pass";
+	private static String jdbcDriver = "com.ibm.db2.jcc.DB2Driver";
+	private static String jdbcurl = "jdbc:db2://192.168.71.250:50000/ORDERDB";
+
+	static{
+		try{
+			Class.forName(jdbcDriver);
+		}catch(ClassNotFoundException e){
+			System.out.println("JBDCドライバのロードに失敗しました。");
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	public CompanyDao(){}
+	/**
+	 * サーブレットで作成したSQL文を受けて結果を返す
+	 * @param sql SQL文
+	 * @return 条件を満たすCompanyのリスト
+	 */
+	public static ArrayList<Company> executeQuery(String sql){
+		Connection con = null;
+		Statement stmt = null;
+		ArrayList<Company> compList = new ArrayList<Company>();
+		try{
+			con = DriverManager.getConnection(jdbcurl,user,password);
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				Company comp = new Company();
+				comp.setCompany_id(rs.getInt("company_id"));
+				comp.setCompany_name(rs.getString("company_name"));
+				comp.setCompany_furigana(rs.getString("company_furigana"));
+				comp.setDepartment(rs.getString("department"));
+				comp.setManager_name(rs.getString("manager_name"));
+				comp.setManager_furigana(rs.getString("manager_furigana"));
+				comp.setManager_phone_number(rs.getString("manager_phone_number"));
+				comp.setBilling_zip_code(rs.getString("billing_zip_code"));
+				comp.setBilling_address(rs.getString("billing_address"));
+				comp.setBilling_phone_number(rs.getString("billing_phone_number"));
+				comp.setSalary_date(rs.getInt("salary_date"));
+				comp.setBank_name(rs.getString("bank_name"));
+				comp.setBranch_name(rs.getString("branch_name"));
+				comp.setAccount_type(rs.getInt("account_type"));
+				comp.setAccount_number(rs.getString("account_number"));
+				comp.setIs_deleted(rs.getInt("is_deleted"));
+				compList.add(comp);
+			}
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}finally{
+			if(stmt!=null){
+				try{
+					stmt.close();
+				}catch(SQLException e){
+				}
+			}
+			if(con!=null){
+				try{
+					con.close();
+				}catch(SQLException e){
+				}
+			}
+		}
+		return compList;
+	}
+	/**
+	 * サーブレットで作成したSQL文を受けて結果を返す
+	 * 企業コードで指定した企業情報を削除する
+	 * (削除済みフラグを立てる)
+	 * @param company_id
+	 * @return 成功したときは1,失敗したときは0
+	 */
+	public static int deleteCompany(String sql){
+		Connection con = null;
+		Statement stmt = null;
+		int result = 0;
+		try{
+			con = DriverManager.getConnection(jdbcurl,user,password);
+			stmt = con.createStatement();
+			result = stmt.executeUpdate(sql);
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}finally{
+			if(stmt!=null){
+				try{
+					stmt.close();
+				}catch(SQLException e){
+				}
+			}
+			if(con!=null){
+				try{
+					con.close();
+				}catch(SQLException e){
+				}
+			}
+		}
+		return result;
+	}
+	/**
+	 * 新しい企業を登録する
+	 * サーブレットで作成したSQL文を受けて結果を返す
+	 * @param company
+	 * @return 成功したときは1,失敗したときは0
+	 */
+	public static int insertCompany(String sql){
+		Connection con = null;
+		Statement stmt = null;
+		int result = 0;
+		try{
+			con = DriverManager.getConnection(jdbcurl,user,password);
+			stmt = con.createStatement();
+			result = stmt.executeUpdate(sql);
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}finally{
+			if(stmt!=null){
+				try{
+					stmt.close();
+				}catch(SQLException e){
+				}
+			}
+			if(con!=null){
+				try{
+					con.close();
+				}catch(SQLException e){
+				}
+			}
+		}
+		return result;
+	}
+	/**
+	 * 企業情報を更新する
+	 * サーブレットで作成したSQL文を受けて結果を返す
+	 * @param company
+	 * @return 成功したときは1,失敗したときは0
+	 */
+	public static int updateCompany(String sql){
+		Connection con = null;
+		Statement stmt = null;
+		int result = 0;
+		try{
+			con = DriverManager.getConnection(jdbcurl,user,password);
+			stmt = con.createStatement();
+			result = stmt.executeUpdate(sql);
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}finally{
+			if(stmt!=null){
+				try{
+					stmt.close();
+				}catch(SQLException e){
+				}
+			}
+			if(con!=null){
+				try{
+					con.close();
+				}catch(SQLException e){
+				}
+			}
+		}
+		return result;
+	}
+
+}
