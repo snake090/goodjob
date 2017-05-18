@@ -42,7 +42,7 @@ public class MemberSearch extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		/*
+		
 		String memNo =request.getParameter("memberNo")	;
 		String error="";
 		int no=0;
@@ -59,8 +59,8 @@ public class MemberSearch extends HttpServlet {
 			request.setAttribute("error", error);
 			request.getRequestDispatcher("M1.jsp").forward(request, response);
 		}
-		String memberNo=String.valueOf(no);*/
-		String memberNo =request.getParameter("memberNo")	;
+		String memberNo=String.valueOf(no);
+		//String memberNo =request.getParameter("memberNo")	;
 		System.out.println(memberNo);
 		String sql="SELECT M.MEMBER_ID,M.MEMBER_NUMBER,M.COMPANY_ID,"
 				+ "M.NAME,M.FURIGANA,M.JOB,M.PHONE_NUMBER,M.CATEGORY,"

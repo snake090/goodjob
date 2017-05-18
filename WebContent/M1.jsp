@@ -2,17 +2,18 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-      <%ArrayList<Member>list=(ArrayList<Member>)session.getAttribute("member");
+      <%
+      
+      ArrayList<Member>list=(ArrayList<Member>)session.getAttribute("member");
       int number=1;
       String error=(String)request.getAttribute("error");
       %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<!-- 
-<%if(error!=null && "".equals(error)){ %>
+<%if(error!=null && !"".equals(error)){ %>
 <font size="5" color="#ff0000"><%=error %></font>
-<%} %>-->
+<%} %>
 <script src="jquery.min.js"></script>
 <script type="text/javascript">
 function check(){
@@ -75,7 +76,7 @@ jQuery( function($) {
 
 	</form>
 
-			<%if(list!=null){ %>
+		
 				<table>
 				<tr>
 					<td></td>
@@ -90,6 +91,7 @@ jQuery( function($) {
 					<td>与信額&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 					<td></td>
 				</tr>
+				<%if(list!=null){ %>
 				<%for(Member m:list){ %>
 				<tr>
 				<td><input type ="radio" name="member" value=<% String.valueOf(number);%>>
