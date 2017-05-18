@@ -119,7 +119,7 @@ function check(value){
 		
 
 	<br><br>
-	<a href="MemberRegistration.html" class="btn btn-primary">登録</a>
+	<a href="M.html" class="btn btn-primary">登録</a>
 
 
 	<hr>
