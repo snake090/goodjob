@@ -13,16 +13,16 @@ import com.goodjob.dao.CompanyDao;
 import com.goodjob.dto.Company;
 
 /**
- * Servlet implementation class companySearch
+ * Servlet implementation class Search
  */
-@WebServlet("company/Search")
-public class companySearch extends HttpServlet {
+@WebServlet("/Search")
+public class Search extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public companySearch() {
+    public Search() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,12 +45,14 @@ public class companySearch extends HttpServlet {
 		String name = req.getParameter("name");
 		String sql = "SELECT * FROM COMPANY";
 		if(!name.isEmpty()){
-			sql += " WHERE COMPANY_NAME LIKE %"+name+"%";
+			sql += " WHERE COMPANY_NAME LIKE '%"+name+"%'";
 		}
 		System.out.println(sql);
 		compList = CompanyDao.executeQuery(sql);
-		req.setAttribute("compList",compList);
+		System.out.println(compList.size());
+		req.setAttribute("list",compList);
 		req.getRequestDispatcher("main.jsp").forward(req,resp);
 	}
+
 
 }

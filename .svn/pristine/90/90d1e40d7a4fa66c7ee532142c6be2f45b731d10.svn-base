@@ -1,0 +1,87 @@
+package com.goodjob.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.goodjob.dto.Item;
+
+/**
+ *
+ * @author 大村祐稀
+ *
+ */
+public class ItemDao {
+
+	// master 192.168.71.250
+	// master password = pass
+	private static final String DRIVER_PATH = "com.ibm.db2.jcc.DB2Driver";
+	private static final String DB_URL = "jdbc:db2://localhost:50000/orderdb";
+	private static final String DB_USER = "db2admin";
+	private static final String DB_USER_PASSWORD = "fight7974";
+
+	static {
+		try {
+			Class.forName(DRIVER_PATH);
+		} catch (ClassNotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 商品番号から該当する商品を返すメソッド
+	 * @param itemNo
+	 * @return
+	 */
+	public static final Item searchItem(long itemNo) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Item item = null;
+		String sql = "select * from item where item_number = ?";
+		try {
+			connection = DriverManager.getConnection(DB_URL, DB_USER, DB_USER_PASSWORD);
+			connection.setAutoCommit(false);
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setLong(1, itemNo);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			connection.commit();
+
+			if (resultSet.next()) {
+				item = new Item();
+				item.setItem_number(resultSet.getInt("item_number"));
+				item.setItem_name(resultSet.getString("item_name"));
+				item.setUnit_price(resultSet.getInt("unit_price"));
+				item.setColors(resultSet.getString("colors"));
+				item.setPatterns(resultSet.getString("patterns"));
+				item.setSizes(resultSet.getString("sizes"));
+				item.setExpiration_date(resultSet.getDate("expiration_date"));
+			}
+
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		} finally {
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+			}
+
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+			}
+		}
+		return item;
+	}
+}
