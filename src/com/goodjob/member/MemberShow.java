@@ -10,26 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.goodjob.dao.MemberDAO;
 import com.goodjob.dto.Member;
 
 /**
- * Servlet implementation class MemberSearch
+ * Servlet implementation class MemberShow
  */
-@WebServlet("/MemberSearch")
-/**
- * 
- * @author 弘中翔太郎
- * @version 1.0
- *
- */
-public class MemberSearch extends HttpServlet {
+@WebServlet("/MemberShow")
+public class MemberShow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberSearch() {
+    public MemberShow() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,44 +36,34 @@ public class MemberSearch extends HttpServlet {
 	}
 
 	/**
-	 * @return メンバーリストを返す
+	 * @return MemberClass
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 * 会員番号を受け取り会員リストを返すメソッド
+	 * @return ラジオボタンでインデックを指定して、Memberクラスを返す
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		
-		String memNo =request.getParameter("memberNo")	;
+		String index=request.getParameter("member");
 		String error="";
-		int no=0;
-		try {
-			no=Integer.parseInt(memNo);
+		int member_index=0;
+		if(index==null&&"".equals(index)){
+			error="ラジオボタンを選択してください";
+			request.setAttribute("error", error);
+			request.getRequestDispatcher("M1.jsp").forward(request, response);
+		}
+		try{
+			member_index=Integer.parseInt(index)-1;
 		}catch (NumberFormatException e) {
-			
-			error="数字以外の入力もしくは桁数がオーバーしています";
+			error="ラジオボタンを選択してください";
 			request.setAttribute("error", error);
 			request.getRequestDispatcher("M1.jsp").forward(request, response);
 		}
-		if(no<0){
-			error="自然数を入力してください";
-			request.setAttribute("error", error);
-			request.getRequestDispatcher("M1.jsp").forward(request, response);
-		}
-		String memberNo=String.valueOf(no);;
-		System.out.println(memberNo);
-		String sql="SELECT M.MEMBER_ID,M.MEMBER_NUMBER,M.COMPANY_ID,"
-				+ "M.NAME,M.FURIGANA,M.JOB,M.PHONE_NUMBER,M.CATEGORY,"
-				+ "M.ENTRY_DATE,M.CREDIT_AMOUNT,M.NOTES,C.COMPANY_NAME "
-				+ "FROM MEMBER M  ,COMPANY C WHERE M.is_deleted =0 "
-				+ " AND M.MEMBER_NUMBER="+memberNo+ " AND M.COMPANY_ID=C.COMPANY_ID";
-		ArrayList<Member> members=MemberDAO.memberSearchExecuteQuery(sql);
-		int size=members.size();
-		System.out.println(size);
-		HttpSession session=request.getSession();
-		session.setAttribute("member", members);
-		request.getRequestDispatcher("M1.jsp").forward(request, response);
 		
+		HttpSession session=request.getSession();
+		ArrayList<Member>members =(ArrayList<Member>)session.getAttribute("member");
+		System.out.println("membersize"+members.size());
+		request.setAttribute("member2", members.get(member_index));
+		request.getRequestDispatcher("M2.jsp").forward(request, response);
 	}
 
 }

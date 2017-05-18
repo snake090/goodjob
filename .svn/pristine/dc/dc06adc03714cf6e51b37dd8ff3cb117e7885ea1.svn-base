@@ -17,12 +17,6 @@ import com.goodjob.dto.Member;
  * Servlet implementation class MemberSearch
  */
 @WebServlet("/MemberSearch")
-/**
- * 
- * @author 弘中翔太郎
- * @version 1.0
- *
- */
 public class MemberSearch extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -43,9 +37,7 @@ public class MemberSearch extends HttpServlet {
 	}
 
 	/**
-	 * @return メンバーリストを返す
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 * 会員番号を受け取り会員リストを返すメソッド
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -67,7 +59,8 @@ public class MemberSearch extends HttpServlet {
 			request.setAttribute("error", error);
 			request.getRequestDispatcher("M1.jsp").forward(request, response);
 		}
-		String memberNo=String.valueOf(no);;
+		String memberNo=String.valueOf(no);
+		//String memberNo =request.getParameter("memberNo")	;
 		System.out.println(memberNo);
 		String sql="SELECT M.MEMBER_ID,M.MEMBER_NUMBER,M.COMPANY_ID,"
 				+ "M.NAME,M.FURIGANA,M.JOB,M.PHONE_NUMBER,M.CATEGORY,"
