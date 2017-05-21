@@ -1,0 +1,86 @@
+package com.goodjob.company;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.goodjob.dao.CompanyDao;
+
+/**
+ * Servlet implementation class Entry
+ */
+@WebServlet("/company/Entry")
+public class Entry extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Entry() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		req.setCharacterEncoding("UTF-8");
+		String company_name = req.getParameter("company_name");
+		String company_furigana = req.getParameter("company_furigana");
+		String department = req.getParameter("department");
+		String manager_name = req.getParameter("manager_name");
+		String manager_furigana = req.getParameter("manager_furigana");
+		String manager_phone_number = req.getParameter("manager_phone_number");
+		String billing_zip_code = req.getParameter("billing_zip_code");
+		String billing_address = req.getParameter("billing_address");
+		String billing_phone_number = req.getParameter("billing_phone_number");
+		int salary_date = Integer.parseInt(req.getParameter("salary_date"));
+		String bank_name = req.getParameter("bank_name");
+		String branch_name = req.getParameter("branch_name");
+		int account_type=0;
+		if(req.getParameter("account_type").equals("普通")){
+			account_type = 1;
+		}
+		String account_number = req.getParameter("account_number");
+		int is_deleted = 0;
+		String sql = "INSERT INTO COMPANY("
+				+ "COMPANY_NAME,COMPANY_FURIGANA,DEPARTMENT,MANAGER_NAME,"
+				+ "MANAGER_FURIGANA,MANAGER_PHONE_NUMBER,BILLING_ZIP_CODE,BILLING_ADDRESS,"
+				+ "BILLING_PHONE_NUMBER,SALARY_DATE,BANK_NAME,BRANCH_NAME,ACCOUNT_TYPE,"
+				+ "ACCOUNT_NUMBER,IS_DELETED) "+
+				"VALUES('" +
+					company_name + "','" +
+					company_furigana + "','" +
+					department + "','" +
+					manager_name + "','" +
+					manager_furigana + "','" +
+					manager_phone_number + "','" +
+					billing_zip_code + "','" +
+					billing_address + "','" +
+					billing_phone_number + "'," +
+					salary_date + ",'" +
+					bank_name + "','" +
+					branch_name + "','" +
+					account_type + "','" +
+					account_number + "','" +
+					0 + "')";
+		System.out.println(sql);
+		CompanyDao.updateQuery(sql);
+		req.getRequestDispatcher("company/CompanySearch").forward(req,resp);
+	}
+
+}

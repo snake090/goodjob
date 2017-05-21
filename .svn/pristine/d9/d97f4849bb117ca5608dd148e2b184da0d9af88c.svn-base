@@ -1,0 +1,76 @@
+package com.goodjob.member;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.goodjob.dao.CompanyDao;
+
+/**
+ * Servlet implementation class MemberRegistration
+ */
+@WebServlet("/MemberRegistration")
+public class MemberRegistration extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public MemberRegistration() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String company_name=request.getParameter("companyName");
+		int companyid=CompanyDao.getCompanyId(company_name);
+		System.out.println("companyid"+companyid);
+		if(companyid>=0){
+			//int member_number=Integer.parseInt(request.getParameter(""));
+			String member_number=request.getParameter("memberNo");
+			System.out.println(member_number);
+			String name=request.getParameter("name");
+			System.out.println(name);
+			String furigana=request.getParameter("furigana");
+			System.out.println(furigana);
+			String job=request.getParameter("job");
+			System.out.println(job);
+			String phone_number=request.getParameter("phoneNumber");
+			System.out.println(phone_number);
+			String category=request.getParameter("category");
+			System.out.println(category);
+			String entry_date=request.getParameter("nichiji");
+			System.out.println(entry_date);
+			//int credit_amount=Integer.parseInt(request.getParameter("creditAmount"));
+			String credit_amount=request.getParameter("creditAmount");
+			System.out.println(credit_amount);
+			String notes=request.getParameter("notes");
+			System.out.println(notes);
+			
+			
+		}else{
+			
+			
+		}
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+		
+	}
+
+}

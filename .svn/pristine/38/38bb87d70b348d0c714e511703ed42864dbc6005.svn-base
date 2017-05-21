@@ -1,0 +1,145 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>注文確認画面</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+
+<script>
+	function checkStaff(){
+		if(document.getElementById("orderStaff").value==''){
+			alert('担当者名を入力してください。');
+			return false;
+		}
+	}
+</script>
+
+<style type="text/css">
+	table, tr, td, th {
+	padding: 10px;
+}
+
+</style>
+</head>
+<body>
+	<h1>注文の確認</h1>
+	<br>
+	<table>
+		<tr>
+			<th>${buyMember.name } </th>
+			<td>${buyMember.furigana }　様</td>
+		</tr>
+		<tr>
+			<td>${buyMember.company_name }</td>
+			<td>${buyMember.member_number }</td>
+		</tr>
+		<tr>
+			<th>与信額</th>
+			<td><fmt:formatNumber value="${buyMember.credit_amount }" /> 円</td>
+		</tr>
+		<tr>
+			<th>お届け先</th>
+			<td>
+				<c:if test="${buyOrder.shipping_category==1 }">自宅</c:if>
+				<c:if test="${buyOrder.shipping_category==2 }">他</c:if>
+			</td>
+		</tr>
+		<tr>
+			<td>〒${buyOrder.shipping_zip_code }</td>
+			<td>${buyOrder.shipping_address }</td>
+		</tr>
+		<tr>
+			<td>${buyOrder.shipping_name }　様</td>
+			<td>${buyOrder.shipping_phone_number }</td>
+		</tr>
+		<tr>
+			<th>留守の時</th>
+			<td>${buyOrder.shipping_if_out }　様</td>
+		</tr>
+		<tr>
+			<th>支払い方法</th>
+			<td>
+				<c:if test="${buyOrder.payment_category==1 }">給与控除（${buyOrder.division }）</c:if>
+				<c:if test="${buyOrder.payment_category==2 }">個人振込（${buyOrder.from_bank }）</c:if>
+			</td>
+		</tr>
+	</table>
+
+
+
+	<br>
+	<p>商品リスト</p>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<td>商品番号</td>
+				<td>商品名</td>
+				<td>数量</td>
+				<td>価格</td>
+				<td>色</td>
+				<td>柄</td>
+				<td>サイズ</td>
+				<td>補足</td>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- mapだよ -->
+			<c:forEach items="${buyProductMap }" var="product">
+				<tr>
+					<td>${product.value.productId }</td>
+					<td>${product.value.productName }</td>
+					<td>${product.value.quantity }</td>
+					<td>${product.value.price }</td>
+					<td>${product.value.selectedColor }</td>
+					<td>${product.value.selectedPattern }</td>
+					<td>${product.value.selectedSize }</td>
+					<td>
+						<form action="ProductMemo" method="post">
+							<input type="text" name="pNote" maxlength="50" value="${product.value.notes }">
+							<input type="hidden" value="${product.key }" name="mapKey">
+							<input type=submit value="入力">
+						</form>
+					</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	<hr>
+	<p>小計　　<fmt:formatNumber value="${sumPrice }" />円（税込）</p>
+	<c:if test="${buyOrder.payment_category==1 }">
+	<p>手数料　<fmt:formatNumber value="${commission }" />円（３％）</p>
+	</c:if>
+	<p>合計　　<fmt:formatNumber value="${totalPrice }" />円</p>
+
+	<c:if test="${buyMember.credit_amount<totalPrice }">	<!-- 与信額が合計より少ない場合　合計額の変数名必要 -->
+	<p><font color="red"><b>お客様の与信額以上になります。担当者に確認してください。</b></font></p>
+	</c:if>
+	<form action="test" method="post" onsubmit="return checkStaff()">
+	<p>担当者名　<input type="text" name="orderStaff" id="orderStaff"></p>
+
+	<p><a href="productCheck.html" class="btn btn-primary">内容修正</a></p>
+	<p><input type="submit" value="注文確定" class="btn btn-primary"></p>
+	</form>
+</body>
+</html>

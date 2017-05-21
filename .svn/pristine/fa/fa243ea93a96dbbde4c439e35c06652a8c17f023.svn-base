@@ -1,0 +1,141 @@
+package com.goodjob.order;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.goodjob.dao.ItemDao;
+import com.goodjob.dto.Item;
+import com.goodjob.dto.Order;
+import com.goodjob.dto.Product;
+import com.goodjob.validator.ProductSearchFormValidator;
+
+/**
+ * Servlet implementation class ProductSearch
+ */
+@WebServlet("/ProductSearchServlet")
+public class ProductSearchServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+
+	private Map<Integer, Product> buyProductMap = new HashMap<>();
+	private int buyProductCount = 0;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ProductSearchServlet() {
+        super();
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+
+		Order order = (Order) session.getAttribute("buyOrder");
+		if (order != null) {
+			session.removeAttribute("buyOrder");
+		}
+
+		Map<Integer, Product> buyProductMap = (Map<Integer, Product>) session.getAttribute("buyProductMap");
+		if (buyProductMap == null) {
+			session.setAttribute("buyProductMap", buyProductMap);
+		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("order_create/productCheck.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		request.setCharacterEncoding("utf-8");
+		String gou = request.getParameter("gou");
+		String page = request.getParameter("page");
+		String ban = request.getParameter("ban");
+
+		// 号・頁・番が入力されていないときの処理
+		List<String> errorList = ProductSearchFormValidator.validate(gou, page, ban);
+		if (errorList == null || errorList.size() > 0) {
+			request.setAttribute("errorList", errorList);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("order_create/productCheck.jsp");
+			dispatcher.forward(request, response);
+		}
+
+		// 頁の桁あわせ
+		if (page.matches("[0-9]{3}")){
+			page = "0" + page;
+		} else if (page.matches("[0-9]{2}")) {
+			page = "00" + page;
+		} else if (page.matches("[0-9]{1}")) {
+			page = "000" + page;
+		}
+
+		// 番の桁あわせ
+		if (ban.matches("[0-9]{2}")) {
+			ban = "0" + ban;
+		} else if (ban.matches("[0-9]{1}")) {
+			ban = "00" + ban;
+		}
+
+		long itemNo = Integer.parseInt(gou + page + ban);
+		Item item = ItemDao.searchItem(itemNo);
+		if (item == null) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("order_create/productCheck.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			Product product = new Product();
+			product.setProductId(item.getItem_number());
+			product.setProductName(item.getItem_name());
+			product.setUnitPrice(item.getUnit_price());
+			product.setQuantity(1);
+			product.setPrice(product.getUnitPrice() * product.getQuantity());
+			if (item.getColors() != null) {
+				product.setColors(Arrays.asList(item.getColors().split(",")));
+			}
+			if (item.getPatterns() != null) {
+				product.setPatterns(Arrays.asList(item.getPatterns().split(",")));
+			}
+
+			if (item.getSizes() != null) {
+				product.setSizes(Arrays.asList(item.getSizes().split(",")));
+			}
+
+			System.out.println(item.getExpiration_date());
+			product.setExpirationDate(item.getExpiration_date());
+
+			System.out.println(product.getExpirationDate());
+			Date date = new Date();
+			if (date.compareTo(product.getExpirationDate()) > 0) {
+				product.setNotes("有効期限切れです。");
+			} else {
+				product.setNotes("");
+			}
+
+			buyProductMap.put(buyProductCount, product);
+			buyProductCount++;
+		}
+
+		HttpSession session = request.getSession();
+		session.setAttribute("buyProductMap", buyProductMap);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("order_create/productCheck.jsp");
+		dispatcher.forward(request, response);
+	}
+
+}

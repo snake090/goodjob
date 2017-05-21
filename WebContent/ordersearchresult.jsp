@@ -1,0 +1,116 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.goodjob.dto.OrderSheet" %>
+<%
+ArrayList<OrderSheet> list = (ArrayList<OrderSheet>)request.getAttribute("resultList");
+String msg = "";
+if(list.size() == 0) {
+	msg = "該当する注文受付票が見つかりませんでした。";
+}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+<title>注文受付票検索結果画面</title>
+<script src="jquery.min.js"></script>
+<script>
+	jQuery( function($) {
+		$('tbody tr[data-number]').addClass('clickable').click( function() {
+			OrderSheet os = list.get($(this).data('number'));
+			session.setAttribute("order_sheet", os);
+			window.location("サーブレット");
+		}).find('a').hover( function() {
+			$(this).parents('tr').unbind('click');
+		}, function() {
+			$(this).parents('tr').click( function() {
+				OrderSheet os = list.get($(this).data('number'));
+				session.setAttribute("order_sheet", os);
+				window.location("サーブレット");
+			});
+		});
+	});
+</script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous">
+</script>
+<style type="text/css">
+table{
+	border-collapse: separate;
+	border-spacing: 0;
+}
+tr:nth-child(n+2){
+	cursor:pointer;
+}
+tr:nth-child(n+2):hover{
+	background-color:#FFF;
+	filter:alpha(opacity=50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+}
+th, td{
+	border: solid 1px;
+	margin: 10px;
+	padding: 10px;
+}
+
+</style>
+</head>
+<body>
+	<h2>注文受付票一覧</h2>
+	<br>
+	<% if(msg.equals("")) { %>
+	<form name="form1" action="sample" method="post">
+	<input type="hidden" name="rownum">
+	<table>
+		<tbody>
+			<tr>
+				<th>注文受付票番号</th>
+				<th>注文日</th>
+				<th>担当者名</th>
+				<th>会員番号</th>
+				<th>会員名</th>
+				<th>会社名</th>
+			</tr>
+<%
+			int cnt = 0;
+			for(OrderSheet os : list) {
+%>
+				<tr data-number=<%= cnt %>>
+					<td><%= os.getOrder().getOrder_id() %></td>
+					<td><%= os.getOrder().getOrder_date() %></td>
+					<td><%= os.getOrder().getOrder_staff() %></td>
+					<td><%= os.getMember().getMember_number() %></td>
+					<td><%= os.getMember().getName() %></td>
+					<td><%= os.getMember().getCompany_name() %></td>
+				</tr>
+<%
+				cnt++;
+			}
+%>
+		</tbody>
+	</table>
+	</form>
+	<% } else { %>
+		<p style="color:red;"><%= msg %></p>
+	<% } %>
+	<br>
+	<a href="ordersearch.html" class="btn btn-warning">戻る</a>
+</body>
+</html>

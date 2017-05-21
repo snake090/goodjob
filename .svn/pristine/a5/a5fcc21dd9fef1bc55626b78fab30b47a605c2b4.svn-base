@@ -1,0 +1,97 @@
+package com.goodjob.view;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.goodjob.dto.Member;
+import com.goodjob.dto.Order;
+import com.goodjob.dto.OrderSheet;
+import com.goodjob.dto.Product;
+
+/**
+ * 注文受付票のサーブレット
+ * @author Taihei Yoshimoto
+ * @version 1.0
+ */
+public class OrderViewServlet extends HttpServlet{
+	/**
+	 * doGet
+	 * @param req HttpServletRequest
+	 * @param resp HttpServletResponse
+	 */
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		req.setCharacterEncoding						("UTF-8");
+		HttpSession		session						= req.getSession();
+		OrderSheet	order_sheet						= (OrderSheet)session.getAttribute("order_sheet");
+
+		try{
+			if(order_sheet == null) throw new NullPointerException();
+
+			Member				member					= order_sheet.getMember();
+			Order				order					= order_sheet.getOrder();
+			ArrayList<Product>	products				= (ArrayList<Product>)order_sheet.getProductList();
+
+			OrderView			order_view				= new OrderView();
+			OrderViewItem[]		order_view_items;
+
+			//ご依頼主
+			order_view.setCompany_name					(member.getCompany_name());								// 協賛企業名
+			order_view.setCompany_code					(member.getCompany_id());								// 企業コード
+			order_view.setJob							(member.getJob());										// 所属
+			order_view.setMember_furigana				(member.getFurigana());									// フリガナ
+			order_view.setMember_name					(member.getName());										// 会員氏名
+			order_view.setMember_number					(member.getMember_number());							// 会員番号
+			order_view.setMember_phone_number			(member.getPhone_number());								// 連絡先電話番号
+			order_view.setCategory						(member.getCategory());									// 区分
+
+			// 受注
+			order_view.setOrder_staff					(order.getOrder_staff());								// 受注担当者
+			order_view.setOrder_date					(order.getOrder_date());								// 注文日
+			order_view.setOrder_id						(order.getOrder_id());									// 注文受付票コード
+
+			// お届先
+			order_view.setShipping_category				(((order.getShipping_category() == 1)? "自宅" : "他"));	// 届先区分
+			String	temp		= order.getShipping_zip_code();
+			String	zip_code	= temp.substring(0, 3);
+			zip_code			+= "-";
+			zip_code			+= temp.substring(3);
+			order_view.setShipping_zip_code				(zip_code);												// 届先郵便番号
+			order_view.setShipping_address_00			(order.getShipping_address());							// 届先住所
+			order_view.setShipping_name					(order.getShipping_name());								// 届先氏名
+			order_view.setShipping_phone_number			(order.getShipping_phone_number());						// 届先電話番号
+			order_view.setShipping_if_out				(order.getShipping_if_out());							// 届先留守の時
+
+			order_view.setPayment_category				(order.getPayment_category());							// 支払区分
+			order_view.setDivision						(order.getDivision());									// 分割回数
+			order_view.setDeduction_date				(order.getDeduction_date());							// 控除年月
+
+			// ご注文商品
+			order_view_items	= new OrderViewItem[((products.size()) > 5)? products.size() : 5];
+			for(int i = 0; i < order_view_items.length; i++) order_view_items[i] = new OrderViewItem();
+			int index = 0;
+			for(Product product : products){
+				order_view_items[index].setItem_number	(product.getProductId());								// 商品番号
+				order_view_items[index].setItem_name	(product.getProductName());								// 商品名
+				order_view_items[index].setColor		(product.getSelectedColor());							// 色
+				order_view_items[index].setPattern		(product.getSelectedPattern());							// 柄
+				order_view_items[index].setSize			(product.getSelectedSize());							// サイズ
+				order_view_items[index].setUnit_price	(product.getUnitPrice());								// 単価
+				order_view_items[index].setQuantity		(product.getQuantity());								// 数量
+				order_view_items[index++].setSupplement	(product.getNotes());									// 補足
+			}
+
+			req.getRequestDispatcher					("orderview.jsp").forward(req, resp);
+		}catch (NullPointerException e){
+			req.getRequestDispatcher					("error_view.html").forward(req, resp);
+		}catch (Exception e){
+			req.setAttribute							("error", e.getMessage());
+			req.getRequestDispatcher					("error_view.jsp").forward(req, resp);
+		}
+	}
+}
