@@ -1,0 +1,217 @@
+package com.goodjob.view;
+
+/**
+ * 注文受付票閲覧の検索を行うサーブレット
+ * @author 福田航平
+ * @version 0.6.0
+ */
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.goodjob.dto.Member;
+import com.goodjob.dto.Order;
+import com.goodjob.dto.OrderSheet;
+
+/**
+ * Servlet implementation class OrderSearchServlet
+ */
+@WebServlet("/ordersearch")
+public class OrderSearchServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * ordersearch.jspからPOSTを受け取り検索結果を返す
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();		// 新規セッション作成。既にあれば既存セッションを返す
+		if(session.getAttribute("msg") != null) {
+			session.removeAttribute("msg");
+		}
+		String memberSql = "SELECT M.MEMBER_ID, M.MEMBER_NUMBER, M.COMPANY_ID,"
+					+ " M.NAME, M.FURIGANA, M.JOB, M.PHONE_NUMBER, M.CATEGORY,"
+					+ "M.ENTRY_DATE, M.CREDIT_AMOUNT, M.NOTES, C.COMPANY_NAME"
+					+ " FROM MEMBER M, COMPANY C";
+		String memberWhere = "";	// 削除済みフラグチェックの条件を先に追加
+		String orderWhere = "";
+//		String morderby = "ORDER BY member_id FETCH FIRST 10 ROWS ONLY";
+//		String oorderby = "ORDER BY order_id FETCH FIRST 46 ROWS ONLY";
+		List<OrderSheet> resultOSL = new ArrayList<OrderSheet>();		// OSL = OrderSheetList
+		List<OrderSheet> memberOSL = new ArrayList<OrderSheet>();
+		List<OrderSheet> orderOSL = new ArrayList<OrderSheet>();
+		String sMinDate = request.getParameter("date_min");
+		String sMaxDate = request.getParameter("date_max");
+		String staff = request.getParameter("staff");
+		String company_name = request.getParameter("company_name");
+		String member_number = request.getParameter("member_number");
+		String name = request.getParameter("name");
+		String order_id = request.getParameter("order_id");
+		boolean isCheck = false;
+		String msg = "";
+
+		try {
+			if(!sMinDate.equals("") || !sMaxDate.equals("")) {
+				orderWhere += addWhereOrAnd(orderWhere);
+				if(sMinDate.equals("")) {
+					if(!sMaxDate.equals("")) {
+						orderWhere += "order_date <= DATE'" + sMaxDate + "'";
+					}
+				} else {
+					orderWhere +="order_date >=  DATE'" + sMinDate + "'";
+					if(!sMaxDate.equals("")) {
+						orderWhere += addWhereOrAnd(orderWhere) + "order_date <= DATE'" + sMaxDate + "'";
+					}
+				}
+				isCheck = true;
+			}
+			if(!staff.equals("")) {
+				orderWhere += addWhereOrAnd(orderWhere);
+				orderWhere += "order_staff LIKE '%" + staff + "%'";
+				isCheck = true;
+			}
+			if(!company_name.equals("")) {
+				memberWhere += addWhereOrAnd(memberWhere);
+				memberWhere += "C.company_name LIKE '%" + company_name + "%'";
+				isCheck = true;
+			}
+			if(!member_number.equals("")) {
+				member_number = request.getParameter("member_number");
+				memberWhere += addWhereOrAnd(memberWhere);
+				memberWhere += "M.member_number = " + Integer.parseInt(member_number);
+				isCheck = true;
+			}
+			if(!name.equals("")) {
+				memberWhere += addWhereOrAnd(memberWhere);
+				memberWhere += "M.name LIKE '%" + name + "%'";
+				isCheck = true;
+			}
+			if(!order_id.equals("")) {
+				orderWhere += addWhereOrAnd(orderWhere);
+				orderWhere += "order_id = " + Long.parseLong(order_id);
+				isCheck = true;
+			}
+		} catch(NullPointerException e) {
+			memberWhere = "";
+			orderWhere = "";
+		} catch(NumberFormatException e) {
+			msg = "入力された値が不正です。";
+		} catch(Exception e) {
+			msg = "エラー：" + e;
+		}
+
+		if(isCheck) {
+			if(memberWhere.equals(" WHERE M.IS_DELETED=0") == false) {		// 会員テーブルから検索するとき
+				List<Member> memberList = com.goodjob.dao.MemberDAO.memberSearchExecuteQuery(
+						memberSql + memberWhere + " AND M.COMPANY_ID=C.COMPANY_ID");
+				if(memberList.size() != 0) {
+					for(Member m : memberList) {	// 会員情報を注文受付票リストにセット
+						List<Order> mo = com.goodjob.dao.OrderSearchDao.executeQuery(	// 会員コードから注文情報を取得
+							" WHERE member_id = " + m.getMember_id());
+						for(Order o : mo) {
+							OrderSheet mOS = new OrderSheet();		// mOS = memberOrderSheet
+							mOS.setOrder(o);
+							mOS.setProductList(com.goodjob.dao.OrderItemDao.searchProduct(o.getOrder_id()));	// 注文コードから注文商品情報を取得
+							mOS.setMember(m);		// ヒットした注文受付票ごとに会員情報をセット
+							memberOSL.add(mOS);
+						}
+					}
+				}
+			}
+
+			if(orderWhere.equals("") == false) {		// 注文テーブルから検索するとき
+				List<Order> orderList = com.goodjob.dao.OrderSearchDao.executeQuery(orderWhere);
+				if(orderList.size() != 0) {
+					for(Order o : orderList) {	// 会員情報を注文受付票リストにセット
+						OrderSheet oOS = new OrderSheet();		// mOS = memberOrderSheet
+						oOS.setOrder(o);
+						oOS.setProductList(com.goodjob.dao.OrderItemDao.searchProduct(o.getOrder_id()));	// 注文コードから注文商品情報を取得
+						oOS.setMember(com.goodjob.dao.MemberDAO.memberSearchExecuteQuery(memberSql + " WHERE member_id = " + o.getMember_id() + " AND M.COMPANY_ID=C.COMPANY_ID").get(0));	// 会員コードから会員情報を取得
+						orderOSL.add(oOS);
+					}
+				}
+			}
+
+			if(!memberWhere.equals("") && !orderWhere.equals("")) {		// 会員の結果と注文の結果で重複するものを結果リストに追加
+				for(OrderSheet mos : memberOSL) {
+					for(OrderSheet oos : orderOSL) {
+						if(mos.getOrder().getOrder_id() == oos.getOrder().getOrder_id()) {
+							resultOSL.add(mos);
+						}
+					}
+				}
+			}else if(!memberWhere.equals("")) {		// 会員のリストしかなければそのまま結果リストへ
+				for(OrderSheet mos : memberOSL) {
+					resultOSL.add(mos);
+				}
+			}else if(!orderWhere.equals("")) {		// 注文のリストしかなければそのまま結果リストへ
+				for(OrderSheet oos : orderOSL) {
+					resultOSL.add(oos);
+				}
+			}
+
+//			String[] chkval = new String[6];
+//			if(checks.contains("date")) { chkval[0] = " value=\"date\""; }
+//			if(checks.contains("staff")) { chkval[1] = " value=\"staff\""; }
+//			if(checks.contains("company_name")) { chkval[2] = " value=\"company_name\""; }
+//			if(checks.contains("member_number")) { chkval[3] = " value=\"\"member_number"; }
+//			if(checks.contains("name")) { chkval[4] = " value=\"name\""; }
+//			if(checks.contains("order_id")) { chkval[5] = " value=\"order_id\""; }
+//
+//			String[] condition = {"<input type=\"hidden\" name=\"chkdate\"" + chkval[0] + ">",
+//					"<input type=\"hidden\" name=\"date_min\" value =\"" + sMinDate + "\">",
+//					"<input type=\"hidden\" name=\"date_max\" value =\"" + sMaxDate + "\">",
+//					"<input type=\"hidden\" name=\"chkstaff\"" + chkval[1] + ">",
+//					"<input type=\"hidden\" name=\"staff\" value =\"" + staff + "\">",
+//					"<input type=\"hidden\" name=\"chkcompany_name\"" + chkval[2] + ">",
+//					"<input type=\"hidden\" name=\"company_name\" value =\"" + company_name + "\">",
+//					"<input type=\"hidden\" name=\"chkmember_number\"" + chkval[3] + ">",
+//					"<input type=\"hidden\" name=\"member_number\" value =\"" + member_number + "\">",
+//					"<input type=\"hidden\" name=\"chkname\"" + chkval[4] + ">",
+//					"<input type=\"hidden\" name=\"name\" value =\"" + name + "\">",
+//					"<input type=\"hidden\" name=\"chkorder_id\"" + chkval[5] + ">",
+//					"<input type=\"hidden\" name=\"order_id\" value =\"" + order_id + "\">"};
+
+			session.setAttribute("resultList", resultOSL);
+//			session.setAttribute("condition", condition);
+
+			response.sendRedirect("orderview/ordersearchresult.jsp");
+//			request.getRequestDispatcher("ordersearchresult.jsp").forward(request, response);
+		}else {
+			if(msg.equals("")) {
+				msg = "検索条件を入力してください。";
+			}
+			session.setAttribute("msg", msg);
+			response.sendRedirect(("orderview/ordersearch.jsp"));
+		}
+	}
+
+	/**
+	 * WHERE句を受け取りWHEREかANDを追加する
+	 * @param where String
+	 * @return " WHERE "または" AND " String
+	 */
+	private String addWhereOrAnd(String where) {
+		if(where.equals("")) {
+			return " WHERE ";
+		} else {
+			return " AND ";
+		}
+	}
+
+//	private void textCheck(String txt, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+//		if(txt.equals("")) {
+//			session.setAttribute("msg", "チェックが入っている項目に条件が入力されていません。");
+//			response.sendRedirect(("orderview/ordersearch.jsp"));
+//		}
+//	}
+}

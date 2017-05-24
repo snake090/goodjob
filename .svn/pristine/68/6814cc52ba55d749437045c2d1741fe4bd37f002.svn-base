@@ -1,0 +1,137 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.goodjob.dto.OrderSheet" %>
+<%
+List<OrderSheet> list = (List<OrderSheet>)session.getAttribute("resultList");
+String msg = "";
+if(list.size() == 0) {
+	msg = "該当する注文受付票が見つかりませんでした。";
+}
+int maxCnt = list.size();
+int thisPage = Integer.parseInt(request.getParameter("page"));
+if(thisPage == 0) {
+	thisPage = 1;
+}
+int maxPage = maxCnt / 10;		// 全ページ数を計算
+double dMaxPage = maxCnt / 10.0;
+if(maxPage != dMaxPage) {
+	maxPage++;
+}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+<title>注文受付票検索結果画面</title>
+<script src="../jquery.min.js"></script>
+<script>
+	jQuery( function($) {
+		$('tbody tr[data-number]').addClass('clickable').click( function() {
+			document.form1.rownum.value=$(this).attr('data-number');
+			<% session.setAttribute("page", thisPage); %>
+			document.form1.submit();
+		}).find('a').hover( function() {
+			$(this).parents('tr').unbind('click');
+		}, function() {
+			$(this).parents('tr').click( function() {
+				document.form1.rownum.value=$(this).attr('data-number');
+				document.form1.submit();
+			});
+		});
+	});
+</script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous">
+</script>
+<style type="text/css">
+table{
+	border-collapse: separate;
+	border-spacing: 0;
+}
+tr:nth-child(n+2){
+	cursor:pointer;
+}
+tr:nth-child(n+2):hover{
+	background-color:#FFF;
+	filter:alpha(opacity=50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+}
+th, td{
+	border: solid 1px;
+	margin: 10px;
+	padding: 10px;
+}
+
+</style>
+</head>
+<body>
+	<h2>注文受付票一覧</h2>
+	<br>
+	<% if(msg.equals("")) { %>
+		<form name="form1" action="orderextraction.jsp" method="post">
+		<input type="hidden" name="rownum">
+		<table>
+			<tbody>
+				<tr>
+					<th>注文受付票番号</th>
+					<th>注文日</th>
+					<th>担当者名</th>
+					<th>会員番号</th>
+					<th>会員名</th>
+					<th>会社名</th>
+				</tr>
+<%
+				int startnum = thisPage * 10 - 10;
+				int endnum = thisPage * 10;
+				for(int i = startnum; i < endnum; i++) {
+					if(i < maxCnt) {
+						OrderSheet os = list.get(i);
+%>
+						<tr data-number=<%= i %>>
+							<td><%= os.getOrder().getOrder_id() %></td>
+							<td><%= os.getOrder().getOrder_date() %></td>
+							<td><%= os.getOrder().getOrder_staff() %></td>
+							<td><%= os.getMember().getMember_number() %></td>
+							<td><%= os.getMember().getName() %></td>
+							<td><%= os.getMember().getCompany_name() %></td>
+						</tr>
+<%					}
+				}
+%>
+			</tbody>
+		</table>
+		</form>
+		<br>
+		<% if(thisPage > 1) { %>
+		<a href="ordersearchresult.jsp?page=<%= thisPage - 1 %>" class="btn btn-primary">前のページへ</a>
+<%
+		}
+		if(thisPage < maxPage) {
+%>
+			<a href="ordersearchresult.jsp?page=<%= thisPage + 1 %>" class="btn btn-primary">次のページへ</a>
+		<% } %>
+		<br>
+	<% } else { %>
+			<p style="color:red;"><%= msg %></p>
+	<% } %>
+	<br>
+	<a href="ordersearch.jsp" class="btn btn-warning">戻る</a>
+</body>
+</html>

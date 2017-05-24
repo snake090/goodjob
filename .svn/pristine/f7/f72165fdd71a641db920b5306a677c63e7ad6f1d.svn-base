@@ -1,0 +1,97 @@
+<%@page import="com.ibm.db2.jcc.am.me"%>
+<%@page import="com.goodjob.dto.Member"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+      <%
+      	
+		Member member=(Member)session.getAttribute("member3");   
+      	String company="";
+      	company=(String)session.getAttribute("company");
+        String error=(String)request.getAttribute("error");
+      %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script type="text/javascript" src="cmanCalendar_v092.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+
+function check(){
+
+	// 「OK」時の処理開始 ＋ 確認ダイアログの表示
+	if(window.confirm('変更して良いですか？')){
+		document.registration.submit();
+
+	}
+	else{
+
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+		return false;
+
+	}
+	// 「キャンセル」時の処理終了
+
+}
+
+</script>
+<title>会員情報変更</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+	<%if(error!=null && !"".equals(error)){ %>
+<font size="5" color="#ff0000"><%=error %></font>
+<%} %>
+</head>
+<body>
+
+<p>会員情報変更<p>
+<form action ="MemberChangeAct" method="POST" name="registration">
+	協賛企業名<br>
+	<%if(company==null) {%>
+		<p><%=member.getCompany_name() %></p>
+	<%}else{ %>
+		<p> <%=company %></p>
+	<%} %>
+	<a href="M7.jsp" class="btn btn-primary">協賛企業変更</a><br><br>
+	会員番号<font size="3" color="#ff0000">*必須</font><br>
+	<input type="text" name="memberNo" value=<%=member.getMember_number() %>><br><br>
+	氏名<font size="3" color="#ff0000">*必須</font><br>
+	<input type="text" name="name" value=<%=member.getName() %>><br><br>
+	フリガナ<font size="3" color="#ff0000">*必須</font><br>
+	<input type="text" name="furigana"value=<%=member.getFurigana() %>><br><br>
+	所属名<font size="3" color="#ff0000">*必須</font><br>
+	<input type="text" name="job"value=<%=member.getJob() %>><br><br>
+	連絡先電話番号<font size="3" color="#ff0000">*必須</font><br>
+	<input type="text" name="phoneNumber"value=<%=member.getPhone_number() %>><br><br>
+	連絡先区分<font size="3" color="#ff0000">*必須</font><br>
+	<input type="text" name="category"value=<%=member.getCategory() %>><br><br>
+	入会日<font size="3" color="#ff0000">*必須</font><br>
+	<input type="text" cmanCLDat="USE:ON" name="nichiji" value=<%=member.getEntry_dateString() %>>
+	<br><br>
+	与信額<font size="3" color="#ff0000">*必須</font><br>
+	<input type="text" name="creditAmount"value=<%=member.getCredit_amount() %> ><br><br>
+	備考<br>
+	<textarea  name="notes"  cols=40 rows=4 > <%=member.getNotes() %>
+	</textarea><br><br>
+	
+</form>
+
+	<a href="" class="btn btn-primary" onclick="check();return false">変更</a>
+		<hr>
+<p><a href ="M1.jsp">会員情報管理画面に戻る</a></p>
+
+</body>
+</html>

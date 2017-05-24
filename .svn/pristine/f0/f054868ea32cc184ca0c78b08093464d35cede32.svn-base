@@ -1,0 +1,33 @@
+package com.goodjob.member;
+
+public class MemberInspection {
+
+	public static String intInspection(String name,String target){
+		
+		if(target==null||"".equals(target)){
+			return name;
+		}
+		try {
+			Integer.parseInt(target);
+		} catch (NumberFormatException e) {
+			return name+"は数字";
+		}
+		return "";
+	}
+	
+	public static String StringInspection(String name,String target){
+		
+		if(target==null||"".equals(target)){
+			return name;
+		}
+		return "";
+	}
+	
+	public static Boolean StringInspection(String target){
+		
+		if(target==null||"".equals(target)){
+			return false;
+		}
+		return true;
+	}
+}

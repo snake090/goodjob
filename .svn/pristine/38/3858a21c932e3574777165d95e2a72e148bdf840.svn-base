@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>メイン画面</title>
+</head>
+<body>
+	<h1>注文受付票作成管理システム</h1><hr><hr>
+	<h2>メニュー</h2>
+	<ul>
+		<li><a href="order_create/memberCheck.jsp">注文登録</a></li><br>
+		<li><a href="orderview/ordersearch.jsp">注文受付票閲覧</a></li><br>
+		<li><a href="M1.jsp">会員管理</a></li><br>
+		<li><a href="company/CompanySearch">協賛企業管理</a></li>
+	</ul>
+</body>
+</html>

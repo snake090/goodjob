@@ -1,0 +1,259 @@
+package com.goodjob.view;
+
+import java.sql.Date;
+
+/**
+ * 注文受付票のオブジェクト
+ * @author Taihei Yoshimoto
+ * @version 1.0
+ */
+public class OrderView {
+	// ご依頼主
+	private	String			company_name;			// 協賛企業名
+	private	int				company_code;			// 企業コード
+	private	String			job;					// 所属
+	private	String			member_furigana;		// フリガナ
+	private	String			member_name;			// 会員氏名
+	private	int				member_number;			// 会員番号
+	private	String			member_phone_number;	// 連絡先電話番号
+	private	String			category;				// 区分
+
+	// 受注
+	private	String			order_staff;			// 受注担当者
+	private	Date			order_date;				// 注文受付
+	private	long			order_id;				// 注文受付票コード
+
+	// お届先
+	private	String			shipping_category;		// 届先区分
+	private	String			shipping_zip_code;		// 届先郵便番号
+	private	String			shipping_address_00;	// 届先住所 右上
+	private	String			shipping_address_01;	// 届先住所 左下
+	private	String			shipping_name;			// 氏名
+	private	String			shipping_phone_number;	// 電話番号
+	private	String			shipping_if_out;		// 留守の時
+
+	// ご注文商品
+	private	OrderViewItem[]	items;					// 注文商品
+
+	// お支払方法
+	private	int				payment_category;		// 支払区分
+	private	int				division;				// 分割回数
+	private	String			from_bank;				// 振込元銀行
+	private	Date			deduction_date;			// 控除年月
+
+	/**
+	 * コンストラクタ フィールド初期化
+	 */
+	public OrderView(){
+		company_name			= "";
+		company_code			= 0;
+		job						= "";
+		member_name				= "";
+		member_number			= 0;
+		member_phone_number		= "";
+		category				= "";
+
+		order_staff				= "";
+		order_date				= null;
+		order_id				= 0;
+
+		shipping_category		= "";
+		shipping_zip_code		= "";
+		shipping_address_00		= "";
+		shipping_address_01		= "";
+		shipping_name			= "";
+		shipping_phone_number	= "";
+		shipping_if_out			= "";
+
+		items					= null;
+
+		payment_category		= 0;
+		division				= 0;
+		from_bank				= "";
+		deduction_date			= null;
+	}
+
+	public String getCompany_name() {
+		return company_name;
+	}
+
+	public void setCompany_name(String company_name) {
+		this.company_name = (company_name == null || company_name.equalsIgnoreCase("null"))? "" : company_name;
+	}
+
+	public int getCompany_code() {
+		return company_code;
+	}
+
+	public void setCompany_code(int company_code) {
+		this.company_code = company_code;
+	}
+
+	public String getJob() {
+		return job;
+	}
+
+	public void setJob(String job) {
+		this.job = job.equalsIgnoreCase("null")? "" : job;
+	}
+
+	public String getMember_furigana() {
+		return member_furigana;
+	}
+
+	public void setMember_furigana(String member_furigana) {
+		this.member_furigana = (member_furigana == null || member_furigana.equalsIgnoreCase("null"))? "" : member_furigana;
+	}
+
+	public String getMember_name() {
+		return member_name;
+	}
+
+	public void setMember_name(String member_name) {
+		this.member_name = (member_name == null || member_name.equalsIgnoreCase("null"))? "" : member_name;
+	}
+
+	public int getMember_number() {
+		return member_number;
+	}
+
+	public void setMember_number(int member_number) {
+		this.member_number = member_number;
+	}
+
+	public String getMember_phone_number() {
+		return member_phone_number;
+	}
+
+	public void setMember_phone_number(String member_phone_number) {
+		this.member_phone_number = (member_phone_number == null || member_phone_number.equalsIgnoreCase("null"))? "" : member_phone_number;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = (category == null || category.equalsIgnoreCase("null"))? "" : category;
+	}
+
+	public String getOrder_staff() {
+		return order_staff;
+	}
+
+	public void setOrder_staff(String order_staff) {
+		this.order_staff = (order_staff == null || order_staff.equalsIgnoreCase("null"))? "" : order_staff;
+	}
+
+	public Date getOrder_date() {
+		return order_date;
+	}
+
+	public void setOrder_date(Date order_date) {
+		this.order_date = order_date;
+	}
+
+	public long getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(long order_id) {
+		this.order_id = order_id;
+	}
+
+	public String getShipping_category() {
+		return shipping_category;
+	}
+
+	public void setShipping_category(String shipping_category) {
+		this.shipping_category = (shipping_category == null || shipping_category.equalsIgnoreCase("null"))? "" : shipping_category;
+	}
+
+	public String getShipping_zip_code() {
+		return shipping_zip_code;
+	}
+
+	public void setShipping_zip_code(String shipping_zip_code) {
+		this.shipping_zip_code = (shipping_zip_code == null || shipping_zip_code.equalsIgnoreCase("null"))? "" : shipping_zip_code;
+	}
+
+	public String getShipping_address_00() {
+		return shipping_address_00;
+	}
+
+	public void setShipping_address_00(String shipping_address_00) {
+		this.shipping_address_00 = (shipping_address_00 == null || shipping_address_00.equalsIgnoreCase("null"))? "" : shipping_address_00;
+	}
+
+	public String getShipping_address_01() {
+		return shipping_address_01;
+	}
+
+	public void setShipping_address_01(String shipping_address_01) {
+		this.shipping_address_01 = (shipping_address_00 == null || shipping_address_01.equalsIgnoreCase("null"))? "" : shipping_address_01;
+	}
+
+	public String getShipping_name() {
+		return shipping_name;
+	}
+
+	public void setShipping_name(String shipping_name) {
+		this.shipping_name = (shipping_name == null || shipping_name.equalsIgnoreCase("null"))? "" : shipping_name;
+	}
+
+	public String getShipping_phone_number() {
+		return shipping_phone_number;
+	}
+
+	public void setShipping_phone_number(String shipping_phone_number) {
+		this.shipping_phone_number = (shipping_phone_number == null || shipping_phone_number.equalsIgnoreCase("null"))? "" : shipping_phone_number;
+	}
+
+	public String getShipping_if_out() {
+		return shipping_if_out;
+	}
+
+	public void setShipping_if_out(String shipping_if_out) {
+		this.shipping_if_out = (shipping_if_out == null || shipping_if_out.equalsIgnoreCase("null"))? "" : shipping_if_out;
+	}
+
+	public OrderViewItem[] getItems() {
+		return items;
+	}
+
+	public void setItems(OrderViewItem[] items) {
+		this.items = items;
+	}
+
+	public int getPayment_category() {
+		return payment_category;
+	}
+
+	public void setPayment_category(int payment_category) {
+		this.payment_category = payment_category;
+	}
+
+	public int getDivision() {
+		return division;
+	}
+
+	public void setDivision(int division) {
+		this.division = division;
+	}
+
+	public String getFrom_bank() {
+		return from_bank;
+	}
+
+	public void setFrom_bank(String from_bank) {
+		this.from_bank = (from_bank == null || from_bank.equalsIgnoreCase("null"))? "" : from_bank;
+	}
+
+	public Date getDeduction_date() {
+		return deduction_date;
+	}
+
+	public void setDeduction_date(Date deduction_date) {
+		this.deduction_date = deduction_date;
+	}
+}

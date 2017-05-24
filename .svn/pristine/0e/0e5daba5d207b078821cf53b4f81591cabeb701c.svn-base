@@ -1,0 +1,219 @@
+package com.goodjob.member;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.goodjob.dao.MemberDAO;
+import com.goodjob.dto.Member;
+
+/**
+ * Servlet implementation class MemberSearch
+ */
+@WebServlet("/MemberSearch")
+/**
+ * 
+ * @author 弘中翔太郎
+ * @version 1.0
+ *
+ */
+public class MemberSearch extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public MemberSearch() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @return メンバーリストを返す
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * 会員番号を受け取り会員リストを返すメソッド
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+		char[] c={'\u3000'};
+		String wspace=new String(c);
+
+		String memNo =request.getParameter("memberNo")	;
+		memNo=memNo.replaceAll(wspace, " ");
+		String[] memNosplit = memNo.split("\\s+");
+
+		String ComapnyName=request.getParameter("companyName");
+		ComapnyName=ComapnyName.replaceAll(wspace, " ");
+		String[] companyNamesplit= ComapnyName.split("\\s+");
+
+		String name=request.getParameter("Name");
+		name=name.replaceAll(wspace, " ");
+		String[] namesplit= name.split("\\s+");
+
+		String search=request.getParameter("conditions");
+
+		String job=request.getParameter("Job");
+		job=job.replaceAll(wspace, " ");
+		String[] jobsplit= job.split("\\s+");
+
+		String date1 =request.getParameter("nichiji1");
+		String date2 =request.getParameter("nichiji2");
+		System.out.println(search+"search");
+		ArrayList<String>sqllist=new ArrayList<>();
+		String error="";
+		String splitsql="";
+		for(int i=0;i<memNosplit.length;i++){
+			if(!memNosplit[i].equals("")&&memNosplit[i]!=null){
+				int no=0;
+				try {
+					no=Integer.parseInt(memNosplit[i]);
+				}catch (NumberFormatException e) {
+
+					error="会員番号は整数を入力してください";
+					request.setAttribute("error", error);
+					request.getRequestDispatcher("M1.jsp").forward(request, response);
+				}
+				if(no<0){
+					error="会員番号は整数を入力してください";
+					request.setAttribute("error", error);
+					request.getRequestDispatcher("M1.jsp").forward(request, response);
+				}
+				if(i==0){
+					splitsql+="(";
+				}
+				splitsql+="M.MEMBER_NUMBER="+memNosplit[i];
+
+				if(i!=memNosplit.length-1){
+					splitsql+=" OR ";
+				}else{
+					splitsql+=")";
+				}
+			}
+		}
+		if(!splitsql.equals("")){
+			sqllist.add(splitsql);
+		}
+
+		splitsql="";
+		for(int i=0;i<companyNamesplit.length;i++){
+			if(MemberInspection.StringInspection(companyNamesplit[i])){
+				if(i==0){
+					splitsql+="(";
+				}
+				splitsql+="C.COMPANY_NAME LIKE '%"+companyNamesplit[i]+"%'";
+				if(i!=companyNamesplit.length-1){
+					splitsql+=" OR ";
+				}else{
+					splitsql+=")";
+				}
+			}
+		}
+		if(!splitsql.equals("")){
+			sqllist.add(splitsql);
+		}
+
+		splitsql="";
+		for(int i=0;i<namesplit.length;i++){
+			if(MemberInspection.StringInspection(namesplit[i])){
+				if(i==0){
+					splitsql+="(";
+				}
+				splitsql+="M.NAME LIKE '%"+namesplit[i]+"%'" ;
+				if(i!=namesplit.length-1){
+					splitsql+=" OR ";
+				}else{
+					splitsql+=")";
+				}
+			}
+		}
+		if(!splitsql.equals("")){
+			sqllist.add(splitsql);
+		}
+
+		splitsql="";
+		for(int i=0;i<jobsplit.length;i++){
+			if(MemberInspection.StringInspection(jobsplit[i])){
+				if(i==0){
+					splitsql+="(";
+				}
+				splitsql+="M.JOB LIKE '%"+jobsplit[i]+"%'" ;
+				if(i!=jobsplit.length-1){
+					splitsql+=" OR ";
+				}else{
+					splitsql+=")";
+				}
+			}
+		}
+		if(!splitsql.equals("")){
+			sqllist.add(splitsql);
+		}
+
+
+		if(MemberInspection.StringInspection(date1)){
+			if(MemberInspection.StringInspection(date2)){
+				sqllist.add("M.ENTRY_DATE>= DATE '"+date1+"' AND M.ENTRY_DATE<= DATE '"+date2+"'");
+			}else{
+				sqllist.add("M.ENTRY_DATE<= DATE '"+date1+"'");
+			}
+		}else{
+			if(MemberInspection.StringInspection(date2)){
+				sqllist.add("M.ENTRY_DATE<= DATE '"+date2+"'");
+			}
+		}
+
+
+		if(sqllist.size()==0){
+			error="会員番号もしくは協賛企業名もしくは氏名もしくは所属名もしくは入会日を入力してください";
+			request.setAttribute("error", error);
+			request.getRequestDispatcher("M1.jsp").forward(request, response);
+		}else{
+			String sql="SELECT M.MEMBER_ID,M.MEMBER_NUMBER,M.COMPANY_ID,"
+					+ "M.NAME,M.FURIGANA,M.JOB,M.PHONE_NUMBER,M.CATEGORY,"
+					+ "M.ENTRY_DATE,M.CREDIT_AMOUNT,M.NOTES,C.COMPANY_NAME "
+					+ "FROM MEMBER M  ,COMPANY C WHERE M.is_deleted =0 "
+					+ " AND M.COMPANY_ID=C.COMPANY_ID";
+			int i=0;
+			for(String list:sqllist){
+				if(i==0){
+					sql+=" "+"AND"+" ";
+					if(search.equals("OR")){
+						sql+="(";
+					}
+				}else{
+					sql+=" "+search+" ";
+				}
+				sql+=list;
+				if(i==sqllist.size()-1&&search.equals("OR")){
+					sql+=")";
+				}
+				i++;
+			}
+			sql+= " ORDER BY C.COMPANY_NAME ";
+
+			ArrayList<Member> members=MemberDAO.memberSearchExecuteQuery(sql);
+
+
+			System.out.println(sql);
+			HttpSession session=request.getSession();
+			session.setAttribute("member", members);
+			request.getRequestDispatcher("M1.jsp").forward(request, response);
+		}
+
+	}
+
+}

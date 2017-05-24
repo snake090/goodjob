@@ -1,0 +1,145 @@
+package com.goodjob.member;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.goodjob.dao.CompanyDao;
+import com.goodjob.dao.MemberDAO;
+import com.goodjob.dto.Member;
+
+/**
+ * Servlet implementation class MemberChangeAct
+ */
+@WebServlet("/MemberChangeAct")
+public class MemberChangeAct extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public MemberChangeAct() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+		 String company_name="";
+		    HttpSession session=request.getSession();
+		    Member member=(Member)session.getAttribute("member3");  
+		    company_name=member.getCompany_name();
+		    if(company_name.equals("")||company_name==null){
+		    	company_name=(String)session.getAttribute("company");
+		    }
+		    System.out.println("companyname:"+company_name);
+			String error="";
+			//ここから検査
+
+			String member_number=request.getParameter("memberNo");
+
+			int member_number_int=Integer.parseInt(member_number);
+
+			String name=request.getParameter("name");
+
+
+			String furigana=request.getParameter("furigana");
+	
+
+			String job=request.getParameter("job");
+			
+
+			String phone_number=request.getParameter("phoneNumber");
+
+
+			String category=request.getParameter("category");
+
+
+			String entry_date=request.getParameter("nichiji");
+
+			Date date=null;
+			
+			try{
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				date = format.parse(entry_date);  
+			}catch (Exception e) {
+				e.printStackTrace();
+				error="dateに変換失敗";
+			}
+
+
+
+			String credit_amount=request.getParameter("creditAmount");
+
+			int credit=Integer.parseInt(credit_amount);
+	
+			
+			String notes=request.getParameter("notes");
+			System.out.println(notes);
+			//ここまで検査
+			System.out.println("companyName"+company_name);
+			int companyid=CompanyDao.getCompanyId(company_name);
+			System.out.println("companyid"+companyid);
+			if(companyid>=0){
+				String comID=String.valueOf(companyid);
+				String member_number_Check="SELECT COUNT (*) AS CNT FROM MEMBER"
+						+ " WHERE COMPANY_ID="+comID+
+						" AND MEMBER_NUMBER="+member_number+
+						" AND NAME != '"+name+"'"+
+						" AND PHONE_NUMBER!='"+phone_number+"'"+
+						" AND is_deleted =0";
+				
+				
+				if(MemberDAO.memberCountExecuteQuery(member_number_Check)==0){
+					String MemberUpdate="UPDATE MEMBER SET COMPANY_ID="+comID+",MEMBER_NUMBER="+member_number
+							+",NAME= '"+name+"',FURIGANA= '"+furigana+"'"+",JOB= '"+job+"',PHONE_NUMBER= '"+phone_number
+							+"',CATEGORY='"+category+"',ENTRY_DATE=DATE'"+entry_date+"',CREDIT_AMOUNT="+credit_amount+",NOTES='"
+							+notes+"' WHERE MEMBER_NUMBER="+member_number ;
+
+					MemberDAO.memberExecuteUpdate(MemberUpdate);
+					System.out.println("変更");
+					/*
+					System.out.println("遷移");
+					String MemberSearch="SELECT M.MEMBER_ID,M.MEMBER_NUMBER,M.COMPANY_ID,"
+							+ "M.NAME,M.FURIGANA,M.JOB,M.PHONE_NUMBER,M.CATEGORY,"
+							+ "M.ENTRY_DATE,M.CREDIT_AMOUNT,M.NOTES,C.COMPANY_NAME "
+							+ "FROM MEMBER M  ,COMPANY C WHERE M.is_deleted =0 "
+							+ " AND M.MEMBER_NUMBER="+member_number+ " AND M.COMPANY_ID=C.COMPANY_ID";*/
+					//Member member2=MemberDAO.searchMember(MemberSearch);
+					request.setAttribute("sucsess", "変更しました");
+					session.invalidate();
+					//request.setAttribute("member2", member2);
+					request.getRequestDispatcher("M1.jsp").forward(request, response);
+
+				}else{
+					error="会員番号が重複しています";
+					//errorShow(error, request, response,member);
+				}
+				session.invalidate();
+				request.getRequestDispatcher("M1.jsp").forward(request, response);
+			}
+			session.invalidate();
+			request.getRequestDispatcher("M1.jsp").forward(request, response);
+
+	}
+
+}

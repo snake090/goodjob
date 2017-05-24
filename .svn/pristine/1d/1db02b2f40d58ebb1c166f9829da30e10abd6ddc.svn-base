@@ -1,0 +1,138 @@
+<%@page import="com.goodjob.dto.Member"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+      <%
+      	
+		Member m=(Member)session.getAttribute("member3");      
+
+      %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/> 
+ <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+    <script>
+        jQuery(function($){
+            $.extend( $.fn.dataTable.defaults, { 
+                language: {
+                    url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
+                } 
+            }); 
+            $("#foo-table").DataTable();
+            // 件数切替機能 無効
+            lengthChange: false,
+            // 検索機能 無効
+            searching: false,
+            // ソート機能 無効
+            ordering: false,
+            // 情報表示 無効
+            info: false,
+            // ページング機能 無効
+            paging: false
+        });
+    </script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+
+function check(){
+
+	// 「OK」時の処理開始 ＋ 確認ダイアログの表示
+	if(window.confirm('登録して良いですか？')){
+	
+		document.registration.submit();
+
+	}
+	else{
+
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+
+
+	}
+	// 「キャンセル」時の処理終了
+
+}
+
+</script>
+<script type="text/javascript">
+
+
+function check(){
+
+	// 「OK」時の処理開始 ＋ 確認ダイアログの表示
+	if(window.confirm('消去して良いですか？')){
+		document.registration.submit()
+		return true;
+
+	}
+	else{
+
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+		return false;
+
+	}
+	// 「キャンセル」時の処理終了
+
+}
+
+</script>
+<title>会員情報消去確認</title>
+</head>
+<body>
+<p>会員情報消去確認</p>
+		<form action="" method="post"name="table">
+		<table id="foo-table" class="table table-bordered">
+		<thead>
+		<tr>
+		<th>会社名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		<th>会員番号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		<th>氏名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		<th>フリガナ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		<th>所属名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		<th>連絡先電話番号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		<th>連絡先区分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		<th>入会日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+		<th>与信額&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+
+		</tr>
+		</thead>
+		
+		<tbody>
+			
+				<tr>
+				<td><%=m.getCompany_name() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td><div align="right"><%=m.getMember_number() %></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td><%=m.getName() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td><%=m.getFurigana() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td><%=m.getJob() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td><%=m.getPhone_number() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td><%=m.getCategory() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td><%=m.getEntry_date() %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td><div align="right"><%=m.getCredit_amountString() %></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				</tr>
+		
+			</tbody>
+						
+		</table><br><br>
+		</form>	
+		<p>備考</p>
+		<%=m.getNotesLine() %><br><br>
+	<a href="" class="btn btn-primary" onclick="check();return false">消去</a>
+	<hr>
+	<a href="M1.jsp"  class="btn btn-warning">会員情報管理画面に戻る</a><br><br><br>
+</body>
+</html>
